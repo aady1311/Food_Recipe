@@ -21,15 +21,62 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
-  const handleAuthAction = () => {
-    if (isAuthenticated) {
-      // Handle logout
-      console.log('Logging out...');
-      setShowDropdown(false);
-    } else {
-      navigate('/login');
+// const handleAuthAction = () => {
+//   if (isAuthenticated) {
+//     // Remove token & any user data
+//     localStorage.removeItem("token");
+//     localStorage.removeItem("user");
+    
+//     console.log("Logged out successfully");
+//     setShowDropdown(false);
+
+//     // Redirect to login page
+//     navigate("/login");
+//   } else {
+//     navigate("/login");
+//   }
+// };
+
+const handleAuthAction = async () => {
+  if (isAuthenticated) {
+    // LOGOUT
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    console.log("Logged out successfully");
+    setShowDropdown(false);
+    navigate("/login");
+  } else {
+    // LOGIN
+    try {
+      const response = await fetch("http://localhost:8080/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // email: loginEmail,   // from your login form state
+          // password: loginPass, // from your login form state
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+
+      const data = await response.json();
+
+      // Save token & user in localStorage
+      localStorage.setItem("token", data.access_token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      console.log("Logged in successfully");
+      navigate("/dashboard"); // redirect after login
+    } catch (error) {
+      console.error("Error:", error);
     }
-  };
+  }
+};
+
 
   return (
     <nav className="bg-ctp-base shadow-md border-b border-ctp-surface0">
@@ -67,6 +114,18 @@ const Navbar: React.FC = () => {
                       <LogOut className="h-4 w-4 mr-3 text-ctp-red" />
                       Logout
                     </button>
+                    {/* <button
+                      onClick={handleAuthAction}
+                      className="w-full flex items-center px-4 py-3 text-sm text-ctp-text hover:bg-ctp-surface0 transition-colors rounded-lg"
+                    >
+                      <Link
+                        to="/login"
+                        className="w-full flex items-center px-4 py-3 text-sm text-ctp-text hover:bg-ctp-surface0 transition-colors rounded-lg"
+                      >
+                        <LogOut className="h-4 w-4 mr-3 text-ctp-red" to={"/login"} />
+                        Logout
+                      </Link>
+                    </button> */}
                   </div>
                 )}
               </div>

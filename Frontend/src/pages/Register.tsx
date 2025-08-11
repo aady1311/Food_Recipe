@@ -21,24 +21,59 @@ const Register: React.FC = () => {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
     
-    if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
-      return;
-    }
+  //   if (formData.password !== formData.confirmPassword) {
+  //     alert('Passwords do not match!');
+  //     return;
+  //   }
 
-    setIsLoading(true);
+  //   setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log('Register attempt:', formData);
-      // For now, just navigate to home
-      navigate('/');
-    }, 1000);
-  };
+  //   // Simulate API call
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //     console.log('Register attempt:', formData);
+  //     // For now, just navigate to home
+  //     navigate('/');
+  //   }, 1000);
+  // };
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (formData.password !== formData.confirmPassword) {
+    alert('Passwords do not match!');
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const res = await fetch(`http://localhost:8080/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData) // sending your signup data
+    });
+
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+    const data = await res.json();
+    console.log('Response from backend:', data);
+
+    navigate('/');
+  } catch (error) {
+    console.error('Error during POST request:', error);
+    alert('Something went wrong! Please try again.');
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-ctp-base to-ctp-mantle flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -51,7 +86,7 @@ const Register: React.FC = () => {
           </div>
           <h2 className="mt-6 text-3xl font-bold text-ctp-text">Create your account</h2>
           <p className="mt-2 text-sm text-ctp-subtext1">
-            Join FlavorHub and discover amazing recipes
+            Join Forgotten and discover amazing recipes
           </p>
         </div>
 

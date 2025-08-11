@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
 from app.routes import auth
+from app.routes import meals
 import logging
 
 # Configure logging
@@ -28,6 +29,7 @@ app.add_middleware(
 
 # Include routes
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
+app.include_router(meals.router, prefix="/meals", tags=["Meals"])
 
 
 @app.get("/")

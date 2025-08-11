@@ -6,7 +6,7 @@ import { Recipe } from '../types/recipe';
 import { fetchRecipes } from '../utils/api';
 import { Loader2 } from 'lucide-react';
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 4;
 
 const Home: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);

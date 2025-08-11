@@ -9,18 +9,60 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+
+  //   // Simulate API call
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //     console.log('Login attempt:', { email, password });
+  //     // For now, just navigate to home
+  //     navigate('/login');
+  //   }, 1000);
+  // };
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsLoading(true);
+
+  try {
+    const res = await fetch("http://localhost:8080/auth/signin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        alert("Invalid email or password.");
+      } else {
+        alert(`Login failed! Status: ${res.status}`);
+      }
       setIsLoading(false);
-      console.log('Login attempt:', { email, password });
-      // For now, just navigate to home
-      navigate('/');
-    }, 1000);
-  };
+      return;
+    }
+
+    const data = await res.json();
+    console.log("Login success:", data);
+
+    // You can store token in localStorage if backend returns one
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+    }
+
+    navigate("/"); // Redirect to home after successful login
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("Something went wrong. Please try again.");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-ctp-base to-ctp-mantle flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -33,7 +75,7 @@ const Login: React.FC = () => {
           </div>
           <h2 className="mt-6 text-3xl font-bold text-ctp-text">Welcome back!</h2>
           <p className="mt-2 text-sm text-ctp-subtext1">
-            Sign in to your FlavorHub account
+            Sign in to your Forgotten Recipes account
           </p>
         </div>
 
@@ -129,6 +171,25 @@ const Login: React.FC = () => {
                   'Sign in'
                 )}
               </button>
+              {/* <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-ctp-base bg-gradient-to-r from-ctp-peach to-ctp-red hover:from-ctp-red hover:to-ctp-maroon focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ctp-peach disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+              >
+                <Link
+                  to="/"
+                  className="w-full flex items-center px-4 py-3 text-sm text-ctp-text hover:bg-ctp-surface0 transition-colors rounded-lg"
+                >
+                  {isLoading ? (
+                    <div className="flex items-center">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-ctp-base mr-2"></div>
+                      Signing in...
+                    </div>
+                  ) : (
+                    'Sign in'
+                  )}
+                </Link>
+              </button> */}
             </div>
           </form>
 

@@ -8,7 +8,7 @@ interface RecipeCardProps {
   onClick: () => void;
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
+const RecipeCard: React.FC<RecipeCardProps & { className?: string }> = ({ recipe, onClick, className = "" }) => {
   const ingredients = getIngredients(recipe);
   const cookingTime = getEstimatedCookingTime(recipe.strInstructions);
   const mainIngredients = ingredients.slice(0, 4);
@@ -16,10 +16,10 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="bg-ctp-surface0 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group border border-ctp-surface1 hover:border-ctp-peach/50"
+      className={`bg-ctp-surface0 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group border border-ctp-surface1 hover:border-ctp-peach/50 flex flex-col h-full ${className}`}
     >
       {/* Recipe Image */}
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-48 overflow-hidden flex-shrink-0">
         <img
           src={recipe.strMealThumb}
           alt={recipe.strMeal}
@@ -39,7 +39,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
       </div>
 
       {/* Recipe Content */}
-      <div className="p-6">
+      <div className="p-6 flex flex-col flex-1">
         <h3 className="text-xl font-semibold text-ctp-text mb-3 group-hover:text-ctp-peach transition-colors line-clamp-2">
           {recipe.strMeal}
         </h3>
@@ -75,7 +75,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
 
         {/* Tags */}
         {recipe.strTags && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mt-auto">
             {recipe.strTags.split(',').slice(0, 3).map((tag, index) => (
               <span
                 key={index}
