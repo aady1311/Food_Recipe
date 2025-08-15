@@ -1,37 +1,37 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useState, useEffect, ReactNode } from "react";
 
-interface AuthContextType {
-  isAuthenticated: boolean;
-  login: () => void;
-  logout: () => void;
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  is_active: boolean;
+  created_at: string;
 }
 
-const AuthContext = createContext<AuthContextType>({
-  isAuthenticated: false,
-  login: () => {},
-  logout: () => {},
+interface AuthContextType {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+}
+
+export const AuthContext = createContext<AuthContextType>({
+  user: null,
+  setUser: () => {},
 });
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem("token") 
-  );
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
 
-  const login = () => {
-    localStorage.setItem("token", "example_token"); 
-    setIsAuthenticated(true);
-  };
-
-  const logout = () => {
-    localStorage.removeItem("token"); 
-    setIsAuthenticated(false);
-  };
+  // Load user from localStorage when app starts
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);

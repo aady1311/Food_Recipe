@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Search, Filter } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../Context/Auth';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -7,9 +9,19 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState('');
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // 🔒 Login check
+    if (!user) {
+      navigate('/login'); // User not logged in → go to login
+      return;
+    }
+
+    // ✅ User logged in → perform search
     onSearch(query);
   };
 
@@ -32,13 +44,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
               <Search className="h-5 w-5 group-hover:scale-110 transition-transform" />
             </button>
           </div>
-          {/* <button
+          {/* 
+          <button
             type="button"
             className="ml-4 h-14 w-14 bg-ctp-surface0 text-ctp-subtext1 rounded-full hover:bg-ctp-surface1 hover:text-ctp-text transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg"
             title="Advanced Filters"
           >
             <Filter className="h-5 w-5" />
-          </button> */}
+          </button> 
+          */}
         </div>
       </form>
     </div>

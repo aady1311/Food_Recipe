@@ -31,10 +31,10 @@ const Footer: React.FC = () => {
               <div className="bg-gradient-to-r from-ctp-peach to-ctp-red p-2 rounded-lg">
                 <Mail className="h-5 w-5 text-ctp-base" />
               </div>
-              <span className="text-lg font-semibold text-ctp-text">FlavorHub</span>
+              <span className="text-lg font-semibold text-ctp-text">Food</span>
             </div>
             <p className="text-ctp-subtext1 text-sm">
-              © 2025 FlavorHub. All rights reserved.
+              © 2025 Food. All rights reserved.
             </p>
             <p className="text-ctp-subtext0 text-xs max-w-md">
               Discover amazing recipes from around the world. Cook, share, and enjoy delicious meals with your loved ones.

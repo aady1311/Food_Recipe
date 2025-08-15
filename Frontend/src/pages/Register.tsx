@@ -64,7 +64,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     const data = await res.json();
     console.log('Response from backend:', data);
 
-    navigate('/');
+    navigate('/login');
   } catch (error) {
     console.error('Error during POST request:', error);
     alert('Something went wrong! Please try again.');
