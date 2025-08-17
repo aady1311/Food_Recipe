@@ -35,18 +35,23 @@ const Home: React.FC = () => {
     }
   };
 
-  const handleSearch = (query: string) => {
-    if (!query.trim()) {
-      setFilteredRecipes(recipes);
-      setPage(1);
-      return;
+  // 🔥 Updated to support query + area filter
+  const handleSearch = (query: string, area?: string) => {
+    let filtered = recipes;
+
+    if (query.trim()) {
+      const lowerQuery = query.toLowerCase();
+      filtered = filtered.filter(recipe =>
+        recipe.strMeal?.toLowerCase().includes(lowerQuery) ||
+        recipe.strCategory?.toLowerCase().includes(lowerQuery) ||
+        recipe.strArea?.toLowerCase().includes(lowerQuery)
+      );
     }
-    const lowerQuery = query.toLowerCase();
-    const filtered = recipes.filter(recipe =>
-      recipe.strMeal?.toLowerCase().includes(lowerQuery) ||
-      recipe.strCategory?.toLowerCase().includes(lowerQuery) ||
-      recipe.strArea?.toLowerCase().includes(lowerQuery)
-    );
+
+    if (area && area !== "All") {
+      filtered = filtered.filter(recipe => recipe.strArea === area);
+    }
+
     setFilteredRecipes(filtered);
     setPage(1);
   };
@@ -104,7 +109,13 @@ const Home: React.FC = () => {
             Explore thousands of delicious recipes from around the world. Find your next favorite dish!
           </p>
           <div className="mt-6">
-            <SearchBar onSearch={handleSearch} />
+            {/* 🔥 Pass updated handleSearch */}
+            {/* <SearchBar onSearch={handleSearch} /> */}
+            <SearchBar
+              onFilter={handleSearch}
+              areas={[...new Set(recipes.map(r => r.strArea))]}
+            />
+
           </div>
         </div>
       </div>
@@ -140,11 +151,10 @@ const Home: React.FC = () => {
             <button
               onClick={() => setPage(p => Math.max(p - 1, 1))}
               disabled={page === 1}
-              className={`px-4 py-2 rounded-full shadow-md ${
-                page === 1
+              className={`px-4 py-2 rounded-full shadow-md ${page === 1
                   ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
                   : 'bg-orange-500 text-white hover:bg-orange-600'
-              }`}
+                }`}
             >
               ← Previous
             </button>
@@ -156,11 +166,10 @@ const Home: React.FC = () => {
             <button
               onClick={() => setPage(p => Math.min(p + 1, totalPages))}
               disabled={page === totalPages}
-              className={`px-4 py-2 rounded-full shadow-md ${
-                page === totalPages
+              className={`px-4 py-2 rounded-full shadow-md ${page === totalPages
                   ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
                   : 'bg-orange-500 text-white hover:bg-orange-600'
-              }`}
+                }`}
             >
               Next →
             </button>

@@ -1,22 +1,25 @@
-# Python specific
-__pycache__/
-*.pyc
-.env
-venv/
-.pytest_cache/
-.mypy_cache/
+# Logs
+logs
 *.log
-*.sqlite3
-
-# React specific
-node_modules/
-build/
-.parcel-cache/
-.DS_Store
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 lerna-debug.log*
-report.html
-.idea/
-.vscode/
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.env
