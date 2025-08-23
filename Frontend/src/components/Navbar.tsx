@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
             <div className="bg-gradient-to-r from-ctp-peach to-ctp-red p-2 rounded-lg">
               <ChefHat className="h-6 w-6 text-ctp-base" />
             </div>
-            <span className="text-xl font-bold text-ctp-text">Food</span>
+            <span className="text-xl font-bold text-ctp-text">Taste Bites</span>
           </Link>
 
           <div className="flex items-center space-x-4">

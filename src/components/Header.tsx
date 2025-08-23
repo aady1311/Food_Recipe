@@ -30,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onViewChange, onSea
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <ChefHat className="h-8 w-8 text-orange-500" />
-            <span className="text-xl font-bold text-gray-900">Forgotten Recipes</span>
+            <span className="text-xl font-bold text-gray-900">Taste Bites</span>
           </div>
 
           {/* Search Bar */}

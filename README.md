@@ -1,4 +1,4 @@
-# Forgotten Recipes - Global Recipe Discovery Platform with Real-time API Integration
+# Taste Bites - Global Recipe Discovery Platform with Real-time API Integration
 
 A full-stack web application for discovering and exploring recipes from around the world using real-time API integration, built with modern web technologies and advanced computer science concepts.
 

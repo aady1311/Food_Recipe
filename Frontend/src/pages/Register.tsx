@@ -86,7 +86,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           </div>
           <h2 className="mt-6 text-3xl font-bold text-ctp-text">Create your account</h2>
           <p className="mt-2 text-sm text-ctp-subtext1">
-            Join Forgotten and discover amazing recipes
+            Join Taste Bites and discover amazing recipes
           </p>
         </div>
 

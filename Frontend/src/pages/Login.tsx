@@ -67,7 +67,7 @@ const Login: React.FC = () => {
           </div>
           <h2 className="mt-6 text-3xl font-bold text-ctp-text">Welcome back!</h2>
           <p className="mt-2 text-sm text-ctp-subtext1">
-            Sign in to your Forgotten Recipes account
+            Sign in to your Taste Bites account
           </p>
         </div>
 
