@@ -1,19 +1,11 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
+import uvicorn
+from app.main import app
 
-router = APIRouter()
-
-# Request model for POST
-class Item(BaseModel):
-    name: str
-    price: float
-
-# GET endpoint
-@router.get("/hello")
-async def say_hello():
-    return {"message": "Hello, world!"}
-
-# POST endpoint
-@router.post("/items")
-async def create_item(item: Item):
-    return {"message": "Item received", "item": item}
+if __name__ == "__main__":
+    uvicorn.run(
+        "app.main:app",
+        host="0.0.0.0",
+        port=8080,
+        reload=True,
+        log_level="info"
+    )
